@@ -1,0 +1,32 @@
+version: "3.7"
+services:
+  bot:
+    build: .
+    depends_on: 
+    - clickhouse
+    environment: 
+    - clickhouse=tcp://clickhouse:9000
+  clickhouse:
+    image: yandex/clickhouse-server
+    ports:
+    - 8123:8123
+    - 9000:9000
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 262144
+        hard: 262144
+    networks: 
+    - grafana-networks
+  grafana:
+    image: grafana/grafana
+    ports:
+    - "3000:3000"
+    networks: 
+    - grafana-networks
+    environment:
+      GF_INSTALL_PLUGINS: "vertamedia-clickhouse-datasource"
+      GF_SECURITY_ADMIN_USER: "admin"
+      GF_SECURITY_ADMIN_PASSWORD: "admin"
+networks: 
+  grafana-networks:

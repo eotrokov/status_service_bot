@@ -2,20 +2,21 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 	"strings"
 	"time"
 )
 
-type service struct {
-	status int
-	url    string
-}
-
 func main() {
-	urls := strings.Split(os.Getenv("services"), " ")
+	os.Setenv("services", "http://ya.ru")
+	env := os.Getenv("services")
+	if len(env) == 0 {
+		fmt.Println("нет данных")
+		return
+	}
+	urls := strings.Split(env, " ")
+
 	services := make([]service, len(urls))
 	for index, url := range urls {
 		services[index] = service{status: 0, url: url}
@@ -30,16 +31,9 @@ func run(services []service) {
 			code := getStatusCode(services[idx].url)
 			if code != services[idx].status {
 				services[idx].status = code
+				AddData(services[idx])
 				fmt.Println(services[idx].url, "status", services[idx].status, http.StatusText(services[idx].status), now)
 			}
 		}
 	}
-}
-
-func getStatusCode(url string) int {
-	resp, err := http.Get(url)
-	if err != nil {
-		log.Fatal(err)
-	}
-	return resp.StatusCode
 }

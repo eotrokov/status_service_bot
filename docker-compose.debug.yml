@@ -1,0 +1,8 @@
+version: '2.1'
+
+services:
+  status_service_bot:
+    image: status_service_bot
+    build:
+      context: .
+      dockerfile: Dockerfile

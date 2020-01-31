@@ -2,14 +2,12 @@ package main
 
 import (
 	"fmt"
-	"net/http"
 	"os"
 	"strings"
 	"time"
 )
 
 func main() {
-	os.Setenv("services", "http://ya.ru")
 	env := os.Getenv("services")
 	if len(env) == 0 {
 		fmt.Println("нет данных")
@@ -26,14 +24,11 @@ func main() {
 }
 
 func run(services []service) {
-	for now := range time.Tick(time.Second * 2) {
+	for now := range time.Tick(time.Second * 10) {
 		for idx := range services {
 			code := getStatusCode(services[idx].url)
-			if code != services[idx].status {
-				services[idx].status = code
-				AddData(services[idx])
-				fmt.Println(services[idx].url, "status", services[idx].status, http.StatusText(services[idx].status), now)
-			}
+			services[idx].status = code
+			AddData(services[idx])
 		}
 	}
 }

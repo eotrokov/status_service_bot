@@ -1,13 +1,20 @@
 version: "3.7"
 services:
   bot:
-    build: .
+    build: 
+      context: .
+      dockerfile: Dockerfile
     depends_on: 
     - clickhouse
     environment: 
     - clickhouse=tcp://clickhouse:9000
+    env_file: services.env
+    networks: 
+    - grafana-networks
   clickhouse:
-    image: yandex/clickhouse-server
+    build: 
+      context: .
+      dockerfile: ClickhouseDockerfile
     ports:
     - 8123:8123
     - 9000:9000

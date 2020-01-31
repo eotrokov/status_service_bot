@@ -3,10 +3,11 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	"github.com/ClickHouse/clickhouse-go"
 	"log"
 	"os"
 	"time"
+
+	"github.com/ClickHouse/clickhouse-go"
 )
 
 func createDB(connect *sql.DB) {
@@ -44,9 +45,8 @@ func insertData(connect *sql.DB, service service) {
 }
 
 func connect() *sql.DB {
-	conn_str := os.Getenv("clickhouse")
-	fmt.Println(conn_str)
-	connect, err := sql.Open("clickhouse", conn_str)
+	connStr := os.Getenv("clickhouse")
+	connect, err := sql.Open("clickhouse", connStr)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -58,5 +58,6 @@ func connect() *sql.DB {
 		}
 		return nil
 	}
+
 	return connect
 }

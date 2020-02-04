@@ -26,14 +26,12 @@ services:
     networks: 
     - grafana-networks
   grafana:
-    image: grafana/grafana
+    build: 
+      context: grafana
+      dockerfile: Dockerfile
     ports:
     - "3000:3000"
     networks: 
     - grafana-networks
-    environment:
-      GF_INSTALL_PLUGINS: "vertamedia-clickhouse-datasource"
-      GF_SECURITY_ADMIN_USER: "admin"
-      GF_SECURITY_ADMIN_PASSWORD: "admin"
 networks: 
   grafana-networks:

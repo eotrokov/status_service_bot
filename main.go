@@ -24,7 +24,7 @@ func main() {
 }
 
 func run(services []service) {
-	for now := range time.Tick(time.Second * 10) {
+	for _ := range time.Tick(time.Second * 10) {
 		for idx := range services {
 			code := getStatusCode(services[idx].url)
 			services[idx].status = code
